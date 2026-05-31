@@ -6,6 +6,12 @@
   "display": "standalone",
   "background_color": "#1e1e1e",
   "theme_color": "#00aa55",
-  "icons": []
+
+  "icons": [
+    {
+      "src": "icons/convertico-ChatGPT Image 27 de mai....png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
 }
-  

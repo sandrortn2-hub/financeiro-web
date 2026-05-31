@@ -207,6 +207,10 @@ body{
         Entrar
     </button>
 
+    <button onclick="cadastrar()">
+    Criar Conta
+</button>
+
 </div>
 
 <div id="appTela" style="display:none;">    
@@ -504,12 +508,26 @@ function mostrarDashboard(){
 
 }
 
+function cadastrar(){
+
+    let novoUsuario = prompt("Crie seu usuário:")
+    let novaSenha = prompt("Crie sua senha:")
+
+    localStorage.setItem("usuario", novoUsuario)
+    localStorage.setItem("senha", novaSenha)
+
+    alert("Cadastro realizado!")
+}
+
 function fazerLogin(){
 
     let usuario = document.getElementById("usuario").value
     let senha = document.getElementById("senha").value
 
-    if(usuario === "admin" && senha === "1234"){
+    let usuarioSalvo = localStorage.getItem("usuario")
+    let senhaSalva = localStorage.getItem("senha")
+
+    if(usuario === usuarioSalvo && senha === senhaSalva){
 
         document.getElementById("loginTela").style.display = "none"
         document.getElementById("appTela").style.display = "block"

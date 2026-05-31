@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Controle Financeiro</title>
+
+<link rel="manifest" href="../manifest.json">
+
+<meta name="theme-color" content="#00aa55">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+    background:#1e1e1e;
+    color:white;
+    font-family:Arial;
+    padding:20px;
+}
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:220px;
+    height:100%;
+    background:#111;
+    padding:20px;
+}
+
+.sidebar button{
+    margin-top:10px;
+}
+
+.container{
+    max-width:700px;
+    margin-left:260px;
+}
+
+@media(max-width:800px){
+
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+
+    .container{
+        margin-left:0;
+        margin-top:20px;
+    }
+}
+
+.card{
+    background:#2a2a2a;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    border:none;
+    border-radius:8px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    background:#00aa55;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+}
+
+.gasto{
+    background:#333;
+    padding:10px;
+    margin-top:10px;
+    border-radius:10px;
+}
+
+.total{
+    font-size:25px;
+    color:#00ff88;
+}
+
+</style>
+
+</head>
+
+<body>
+
+</div>    
+
+<div id="loginTela" class="card">
+
+    <h2>Login Financeiro</h2>
+
+    <input type="text" id="usuario" placeholder="Usuário">
+
+    <input type="password" id="senha" placeholder="Senha">
+
+    <button onclick="fazerLogin()">
+        Entrar
+    </button>
+
+</div>
+
+<div id="appTela" style="display:none;">    
+
+<div class="sidebar">
+
+    <h2>Financeiro</h2>
+
+    <button onclick="mostrarDashboard()">
+    Dashboard
+</button>
+
+    <button onclick="toggleGrafico()">
+    Gráfico Pizza
+</button>
+
+   <button onclick="exportarRelatorio()">
+    Relatórios
+</button>
+
+    <button onclick="toggleTema()">
+        Configurações
+    </button>
+
+<button onclick="iniciarVoz()">
+    Comando por voz
+</button>    
+
+</div>
+
+<div class="container">
+
+<h1>Controle Financeiro</h1>
+
+<div class="card">
+
+<input type="text" id="categoria" placeholder="Categoria">
+
+<input type="number" id="valor" placeholder="Valor">
+
+<button onclick="adicionarGasto()">
+Adicionar gasto
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>Total de gastos</h2>
+
+<div class="total" id="total">
+R$ 0
+</div>
+
+</div>
+
+<div id="lista"></div>
+
+<div class="card" id="cardGrafico" style="display:none;">
+
+    <h2>Gráfico de gastos</h2>
+    <canvas id="graficoBarra"></canvas>
+    <canvas id="grafico"></canvas>
+
+</div>
+
+</div>
+
+<script>
+
+let gastos = JSON.parse(localStorage.getItem("gastos")) || []
+
+atualizarTela()
+
+function adicionarGasto(){
+
+    let categoria =
+    document.getElementById("categoria").value
+
+    let valor =
+    Number(document.getElementById("valor").value)
+
+    if(categoria === "" || valor <= 0){
+        return
+    }
+
+    gastos.push({
+        categoria,
+        valor
+    })
+
+    localStorage.setItem(
+        "gastos",
+        JSON.stringify(gastos)
+    )
+
+    atualizarTela()
+}
+
+function atualizarTela(){
+
+    let lista = document.getElementById("lista")
+    lista.innerHTML = ""
+
+    let total = 0
+
+    gastos.forEach((gasto, index) => {
+
+        total += gasto.valor
+
+        lista.innerHTML += `
+        <div class="gasto">
+            ${gasto.categoria} - R$ ${gasto.valor}
+
+            <button onclick="excluirGasto(${index})">
+                Excluir
+            </button>
+        </div>
+        `
+    })
+
+    let categorias = []
+    let valores = []
+
+    gastos.forEach(gasto => {
+        categorias.push(gasto.categoria)
+        valores.push(gasto.valor)
+    })
+
+    document.getElementById("total").innerText = `R$ ${total}`
+
+    let ctx = document.getElementById("grafico")
+
+    if(window.meuGrafico){
+        window.meuGrafico.destroy()
+    }
+
+    window.meuGrafico = new Chart(ctx, {
+        type: "pie",
+        data: {
+            labels: categorias,
+            datasets: [{
+                data: valores
+            }]
+        }
+    })
+
+    let ctxBarra = document.getElementById("graficoBarra")
+
+    if(window.meuGraficoBarra){
+        window.meuGraficoBarra.destroy()
+    }
+
+    window.meuGraficoBarra = new Chart(ctxBarra, {
+        type: "bar",
+        data: {
+            labels: categorias,
+            datasets: [{
+                label: "Gastos",
+                data: valores
+            }]
+        }
+    })
+}
+
+function excluirGasto(index){
+
+    gastos.splice(index, 1)
+
+    localStorage.setItem(
+        "gastos",
+        JSON.stringify(gastos)
+    )
+
+    atualizarTela()
+}
+
+function toggleTema(){
+
+    if(document.body.style.background == "white"){
+
+        document.body.style.background = "#1e1e1e"
+        document.body.style.color = "white"
+
+    }else{
+
+        document.body.style.background = "white"
+        document.body.style.color = "black"
+    }
+
+    let cards = document.querySelectorAll(".card")
+
+    cards.forEach(card => {
+
+        if(document.body.style.background == "white"){
+
+            card.style.background = "#dddddd"
+
+        }else{
+
+            card.style.background = "#2a2a2a"
+        }
+    })
+}
+
+function mostrarGraficoPizza(){
+
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+    })
+
+}
+
+
+function toggleGrafico(){
+
+    let card = document.getElementById("cardGrafico")
+
+    if(card.style.display === "none"){
+        card.style.display = "block"
+    }else{
+        card.style.display = "none"
+    }
+}
+
+function exportarRelatorio(){
+
+    let texto = "RELATÓRIO FINANCEIRO\n\n"
+
+    let total = 0
+
+    gastos.forEach(gasto => {
+        texto += `${gasto.categoria} - R$ ${gasto.valor}\n`
+        total += gasto.valor
+    })
+
+    texto += `\nTOTAL: R$ ${total}`
+
+    alert(texto)
+}
+
+function iniciarVoz(){
+
+    alert("Microfone iniciado")
+
+    let SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition
+
+    if(!SpeechRecognition){
+        alert("Este navegador não suporta comando por voz.")
+        return
+    }
+
+    let reconhecimento = new SpeechRecognition()
+    reconhecimento.lang = "pt-BR"
+    reconhecimento.start()
+
+    reconhecimento.onresult = function(event){
+
+        let texto = event.results[0][0].transcript
+
+        alert("Você falou: " + texto)
+
+        let partes = texto.split(" ")
+        let categoria = partes[0]
+        let valor = Number(partes[1])
+
+        if(categoria && valor){
+
+            gastos.push({categoria, valor})
+
+            localStorage.setItem("gastos", JSON.stringify(gastos))
+
+            atualizarTela()
+        }
+    }
+}
+
+function mostrarDashboard(){
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    })
+
+}
+
+function fazerLogin(){
+
+    let usuario = document.getElementById("usuario").value
+    let senha = document.getElementById("senha").value
+
+    if(usuario === "admin" && senha === "1234"){
+
+        document.getElementById("loginTela").style.display = "none"
+        document.getElementById("appTela").style.display = "block"
+
+    }else{
+
+        alert("Usuário ou senha incorretos")
+    }
+}
+
+</script>
+
+</body>
+</html>

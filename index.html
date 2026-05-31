@@ -186,8 +186,6 @@ R$ 0
 
 let gastos = JSON.parse(localStorage.getItem("gastos")) || []
 
-atualizarTela()
-
 function adicionarGasto(){
 
     let categoria =
@@ -424,6 +422,8 @@ function fazerLogin(){
         alert("Usuário ou senha incorretos")
     }
 }
+
+atualizarTela()
 
 </script>
 

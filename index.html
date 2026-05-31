@@ -2,22 +2,13 @@
 <html lang="pt-br">
 
 <head>
-
 <link rel="manifest" href="/manifest.json">
-<link rel="icon" href="/icons/icon.png">
-<link rel="apple-touch-icon" href="/icons/icon.png">    
-
-<link rel="manifest" href="/manifest.json">
-   
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="/icons/icon.png">
 <link rel="apple-touch-icon" href="/icons/icon.png">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Controle Financeiro</title>
-
-<link rel="manifest" href="/manifest.json">
-
 <meta name="theme-color" content="#00aa55">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -29,10 +20,18 @@
     box-sizing:border-box;
 }
 
+html{
+    height:100%;
+}
+
 body{
+    min-height:100vh;
+    margin:0;
+    padding:15px;
     background:#1e1e1e;
     color:white;
     font-family:Arial, sans-serif;
+    overflow-x:hidden;
 }
 
 .sidebar{
@@ -164,6 +163,30 @@ html, body{
     .total{
         font-size:20px;
     }
+}
+
+html, body{
+    width:100%;
+    height:100%;
+    margin:0;
+    padding:0;
+    overflow-x:hidden;
+    overflow-y:auto;
+    touch-action:manipulation;
+    -webkit-text-size-adjust:100%;
+    background:#1e1e1e;
+}
+
+body{
+    max-width:100vw;
+    min-height:100vh;
+}
+
+.container{
+    width:100%;
+    max-width:100%;
+    margin:0 auto;
+    box-sizing:border-box;
 }
 
 </style>

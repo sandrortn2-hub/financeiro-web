@@ -16,6 +16,7 @@
 
 <style>
 
+/* CORREÇÃO IPHONE */
 *{
     box-sizing:border-box;
 }
@@ -26,25 +27,31 @@ html, body{
     width:100%;
     max-width:100%;
     overflow-x:hidden;
-    background:#1e1e1e;
 }
 
-.sidebar,
-.container,
-.card,
-input,
-button{
-    width:100%;
-    max-width:100%;
-}
+@media(max-width:800px){
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
 
-.sidebar{
-    padding:20px;
-}
+    .container{
+        margin-left:0;
+        width:100%;
+        max-width:100%;
+        padding:15px;
+    }
 
-.container{
-    margin:0;
-    padding:20px;
+    .card{
+        width:100%;
+        max-width:100%;
+    }
+
+    input, button{
+        width:100%;
+        max-width:100%;
+    }
 }
 
 @media(max-width:800px){

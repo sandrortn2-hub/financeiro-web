@@ -211,6 +211,10 @@ body{
     Criar Conta
 </button>
 
+   <button onclick="trocarSenha()">
+Trocar Senha
+</button>
+
 </div>
 
 <div id="appTela" style="display:none;">    
@@ -517,6 +521,28 @@ function cadastrar(){
     localStorage.setItem("senha", novaSenha)
 
     alert("Cadastro realizado!")
+}
+
+function trocarSenha(){
+
+    let usuarioAtual = prompt("Digite seu usuário:")
+    let senhaAtual = prompt("Digite sua senha atual:")
+
+    let usuarioSalvo = localStorage.getItem("usuario")
+    let senhaSalva = localStorage.getItem("senha")
+
+    if(usuarioAtual === usuarioSalvo && senhaAtual === senhaSalva){
+
+        let novaSenha = prompt("Digite a nova senha:")
+
+        localStorage.setItem("senha", novaSenha)
+
+        alert("Senha alterada com sucesso!")
+
+    }else{
+
+        alert("Usuário ou senha incorretos")
+    }
 }
 
 function fazerLogin(){

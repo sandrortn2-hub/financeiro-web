@@ -16,70 +16,54 @@
 
 <style>
 
-body{
+*{
+    box-sizing:border-box;
+}
+
+html, body{
+    margin:0;
+    padding:0;
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
     background:#1e1e1e;
-    color:white;
-    font-family:Arial;
-    padding:20px;
+}
+
+.sidebar,
+.container,
+.card,
+input,
+button{
+    width:100%;
+    max-width:100%;
 }
 
 .sidebar{
-    position:fixed;
-    left:0;
-    top:0;
-    width:220px;
-    height:100%;
-    background:#111;
     padding:20px;
 }
 
-.sidebar button{
-    margin-top:10px;
-}
-
 .container{
-    max-width:700px;
-    margin-left:260px;
+    margin:0;
+    padding:20px;
 }
 
 @media(max-width:800px){
 
     .sidebar{
         position:relative;
-        width:100%;
         height:auto;
+        padding:15px;
     }
 
     .container{
         margin-left:0;
         margin-top:20px;
+        padding:15px;
     }
-}
 
-.card{
-    background:#2a2a2a;
-    padding:20px;
-    border-radius:15px;
-    margin-bottom:20px;
-}
-
-input{
-    width:100%;
-    padding:10px;
-    margin-top:10px;
-    border:none;
-    border-radius:8px;
-}
-
-button{
-    width:100%;
-    padding:12px;
-    margin-top:15px;
-    background:#00aa55;
-    color:white;
-    border:none;
-    border-radius:10px;
-    font-size:16px;
+    h1{
+        font-size:34px;
+    }
 }
 
 .gasto{
@@ -354,8 +338,6 @@ function exportarRelatorio(){
 
 function iniciarVoz(){
 
-    alert("Microfone iniciado")
-
     const SpeechRecognition =
         window.SpeechRecognition || window.webkitSpeechRecognition
 
@@ -376,8 +358,6 @@ function iniciarVoz(){
 
         let texto = event.results[0][0].transcript.toLowerCase()
 
-        alert("Você falou: " + texto)
-
         let valorTexto = texto.match(/\d+/)
 
         if(!valorTexto){
@@ -396,7 +376,6 @@ function iniciarVoz(){
             gastos.push({ categoria, valor })
             localStorage.setItem("gastos", JSON.stringify(gastos))
             atualizarTela()
-            alert("Gasto salvo")
         }
     }
 

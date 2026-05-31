@@ -517,10 +517,41 @@ function cadastrar(){
     let novoUsuario = prompt("Crie seu usuário:")
     let novaSenha = prompt("Crie sua senha:")
 
+    if(!novoUsuario || !novaSenha){
+
+        alert("Preencha usuário e senha")
+        return
+    }
+
     localStorage.setItem("usuario", novoUsuario)
     localStorage.setItem("senha", novaSenha)
 
-    alert("Cadastro realizado!")
+    alert("Cadastro realizado com sucesso!")
+}
+
+function fazerLogin(){
+
+    let usuario = document.getElementById("usuario").value
+    let senha = document.getElementById("senha").value
+
+    let usuarioSalvo = localStorage.getItem("usuario")
+    let senhaSalva = localStorage.getItem("senha")
+
+    if(usuarioSalvo === null || senhaSalva === null){
+
+        alert("Crie uma conta primeiro!")
+        return
+    }
+
+    if(usuario === usuarioSalvo && senha === senhaSalva){
+
+        document.getElementById("loginTela").style.display = "none"
+        document.getElementById("appTela").style.display = "block"
+
+    }else{
+
+        alert("Usuário ou senha incorretos")
+    }
 }
 
 function trocarSenha(){
@@ -538,25 +569,6 @@ function trocarSenha(){
         localStorage.setItem("senha", novaSenha)
 
         alert("Senha alterada com sucesso!")
-
-    }else{
-
-        alert("Usuário ou senha incorretos")
-    }
-}
-
-function fazerLogin(){
-
-    let usuario = document.getElementById("usuario").value
-    let senha = document.getElementById("senha").value
-
-    let usuarioSalvo = localStorage.getItem("usuario")
-    let senhaSalva = localStorage.getItem("senha")
-
-    if(usuario === usuarioSalvo && senha === senhaSalva){
-
-        document.getElementById("loginTela").style.display = "none"
-        document.getElementById("appTela").style.display = "block"
 
     }else{
 

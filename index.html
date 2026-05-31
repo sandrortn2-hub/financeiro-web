@@ -131,6 +131,14 @@ html, body{
     border-radius:10px;
 }
 
+.renda{
+    background:#004d2a;
+    padding:10px;
+    margin-top:10px;
+    border-radius:10px;
+    color:#00ff88;
+}
+
 .total{
     font-size:25px;
     color:#00ff88;
@@ -341,7 +349,7 @@ function atualizarTela(){
         }
 
         lista.innerHTML += `
-        <div class="gasto">
+        <div class="${gasto.tipo === "renda" ? "renda" : "gasto"}">
             ${nomeItem} - ${sinal} R$ ${gasto.valor}
 
             <button onclick="excluirGasto(${index})">

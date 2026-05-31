@@ -560,24 +560,17 @@ function fazerLogin(){
 
 function trocarSenha(){
 
-    let usuarioAtual = prompt("Digite seu usuário:")
-    let senhaAtual = prompt("Digite sua senha atual:")
+    let novaSenha = prompt("Digite a nova senha:")
 
-    let usuarioSalvo = localStorage.getItem("usuario")
-    let senhaSalva = localStorage.getItem("senha")
+    if(!novaSenha){
 
-    if(usuarioAtual === usuarioSalvo && senhaAtual === senhaSalva){
-
-        let novaSenha = prompt("Digite a nova senha:")
-
-        localStorage.setItem("senha", novaSenha)
-
-        alert("Senha alterada com sucesso!")
-
-    }else{
-
-        alert("Usuário ou senha incorretos")
+        alert("Digite uma senha válida")
+        return
     }
+
+    localStorage.setItem("senha", novaSenha)
+
+    alert("Senha alterada com sucesso!")
 }
 
 function limparConta(){

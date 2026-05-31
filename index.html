@@ -245,7 +245,11 @@ Trocar Senha
 
 <button onclick="iniciarVoz()">
     Comando por voz
-</button>    
+</button>  
+
+<button onclick="adicionarRenda()">
+    Adicionar Renda
+</button>
 
 </div>
 
@@ -577,6 +581,29 @@ function limparConta(){
     localStorage.removeItem("usuario")
     localStorage.removeItem("senha")
     alert("Conta apagada! Agora clique em Criar Conta novamente.")
+}
+
+function adicionarRenda(){
+
+    let nome = prompt("Nome da renda:")
+    let valor = Number(prompt("Valor da renda:"))
+
+    if(!nome || !valor){
+        alert("Preencha nome e valor da renda")
+        return
+    }
+
+    gastos.push({
+        nome: nome,
+        valor: valor,
+        tipo: "renda"
+    })
+
+    localStorage.setItem("gastos", JSON.stringify(gastos))
+
+    atualizarTela()
+
+    alert("Renda adicionada com sucesso!")
 }
 
 atualizarTela()

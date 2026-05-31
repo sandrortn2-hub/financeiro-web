@@ -360,16 +360,23 @@ function iniciarVoz(){
 
     alert("Microfone iniciado")
 
-    let SpeechRecognition =
-        window.SpeechRecognition || window.webkitSpeechRecognition
+   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (!SpeechRecognition) {
+    alert("Seu navegador não suporta reconhecimento de voz.");
+    return;
+} 
 
     if(!SpeechRecognition){
         alert("Este navegador não suporta comando por voz.")
         return
     }
 
-    let reconhecimento = new SpeechRecognition()
-    reconhecimento.lang = "pt-BR"
+const reconhecimento = new SpeechRecognition();
+
+reconhecimento.continuous = false;
+reconhecimento.interimResults = false;
+reconhecimento.lang = "pt-BR";    
     reconhecimento.start()
 
     reconhecimento.onresult = function(event){

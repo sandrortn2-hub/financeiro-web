@@ -326,32 +326,32 @@ function atualizarTela(){
     lista.innerHTML = ""
 
     let total = 0
+    let categorias = []
+    let valores = []
 
     gastos.forEach((gasto, index) => {
 
-    if(gasto.tipo === "renda"){
-    total += gasto.valor
-}else{
-    total -= gasto.valor
-}    
+        let nomeItem = gasto.tipo === "renda" ? gasto.nome : gasto.categoria
+        let sinal = gasto.tipo === "renda" ? "+" : "-"
+
+        if(gasto.tipo === "renda"){
+            total += Number(gasto.valor)
+        }else{
+            total -= Number(gasto.valor)
+        }
 
         lista.innerHTML += `
         <div class="gasto">
-            ${gasto.tipo === "renda" ? gasto.nome : gasto.categoria} - ${gasto.tipo === "renda" ? "+" : "-"} R$ ${gasto.valor}
+            ${nomeItem} - ${sinal} R$ ${gasto.valor}
 
             <button onclick="excluirGasto(${index})">
                 Excluir
             </button>
         </div>
         `
-    })
 
-    let categorias = []
-    let valores = []
-
-    gastos.forEach(gasto => {
-        categorias.push(gasto.categoria)
-        valores.push(gasto.valor)
+        categorias.push(nomeItem)
+        valores.push(Number(gasto.valor))
     })
 
     document.getElementById("total").innerText = `R$ ${total}`
@@ -383,7 +383,7 @@ function atualizarTela(){
         data: {
             labels: categorias,
             datasets: [{
-                label: "Gastos",
+                label: "Entradas e Saídas",
                 data: valores
             }]
         }

@@ -329,11 +329,15 @@ function atualizarTela(){
 
     gastos.forEach((gasto, index) => {
 
-        total += gasto.valor
+    if(gasto.tipo === "renda"){
+    total += gasto.valor
+}else{
+    total -= gasto.valor
+}    
 
         lista.innerHTML += `
         <div class="gasto">
-            ${gasto.categoria} - R$ ${gasto.valor}
+            ${gasto.tipo === "renda" ? gasto.nome : gasto.categoria} - ${gasto.tipo === "renda" ? "+" : "-"} R$ ${gasto.valor}
 
             <button onclick="excluirGasto(${index})">
                 Excluir

@@ -415,9 +415,9 @@ window.meuGraficoBarra = new Chart(ctxBarra, {
         datasets: [{
             label: "Rendas (+) e Gastos (-)",
             data: valores,
-            backgroundColor: valores.map(valor =>
-                valor >= 0 ? "#00aa55" : "#ff4444"
-            )
+        backgroundColor: valores.map(valor =>
+    valor < 0 ? "#ff4444" : "#00aa55"
+        )    
         }]
     }
 })

@@ -408,18 +408,19 @@ if(gasto.tipo === "renda"){
         window.meuGraficoBarra.destroy()
     }
 
-    window.meuGraficoBarra = new Chart(ctxBarra, {
-        type: "bar",
-        data: {
-            labels: categorias,
+window.meuGraficoBarra = new Chart(ctxBarra, {
+    type: "bar",
+    data: {
+        labels: categorias,
         datasets: [{
-    label: "Rendas (+) e Gastos (-)",
-    data: valores,
-    backgroundColor: valores.map(valor => valor >= 0 ? "#00aa55" : "#ff4444")
-}]   
-        }
-    })
-}
+            label: "Rendas (+) e Gastos (-)",
+            data: valores,
+            backgroundColor: valores.map(valor =>
+                valor >= 0 ? "#00aa55" : "#ff4444"
+            )
+        }]
+    }
+})
 
 function excluirGasto(index){
 

@@ -609,11 +609,11 @@ function adicionarRenda(){
         return
     }
 
-    gastos.push({
-        nome: nome,
-        valor: valor,
-        tipo: "renda"
-    })
+   gastos.push({
+    categoria: nome,
+    valor: valor,
+    tipo: "renda"
+})
 
     localStorage.setItem("gastos", JSON.stringify(gastos))
 

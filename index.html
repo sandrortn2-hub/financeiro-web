@@ -259,6 +259,10 @@ Trocar Senha
     Adicionar Renda
 </button>
 
+<button onclick="toggleValores()">
+    👁️ Ocultar Valores
+</button>
+
 <button onclick="limparGastos()">
     Limpar Lançamentos
 </button>
@@ -306,6 +310,7 @@ R$ 0
 <script>
 
 let gastos = JSON.parse(localStorage.getItem("gastos")) || []
+let valoresOcultos = false
 
 function adicionarGasto(){
 
@@ -355,7 +360,7 @@ function atualizarTela(){
 
         lista.innerHTML += `
         <div class="${gasto.tipo === "renda" ? "renda" : "gasto"}">
-            ${nomeItem} - ${sinal} R$ ${valorItem.toFixed(2)}
+        ${nomeItem} - ${valoresOcultos ? "••••••" : sinal + " R$ " + valorItem.toFixed(2)}    
 
             <button onclick="excluirGasto(${index})">
                 Excluir
@@ -367,7 +372,7 @@ function atualizarTela(){
         valores.push(valorItem)
     })
 
-    document.getElementById("total").innerText = `R$ ${total.toFixed(2)}`
+    document.getElementById("total").innerText = valoresOcultos ? "R$ ••••••" : `R$ ${total.toFixed(2)}`
 
     let ctx = document.getElementById("grafico")
 

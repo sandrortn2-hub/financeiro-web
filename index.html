@@ -343,18 +343,19 @@ function atualizarTela(){
 
     gastos.forEach((gasto, index) => {
 
-        let nomeItem = gasto.tipo === "renda" ? gasto.nome : gasto.categoria
+        let nomeItem = gasto.categoria
+        let valorItem = Number(gasto.valor)
         let sinal = gasto.tipo === "renda" ? "+" : "-"
 
         if(gasto.tipo === "renda"){
-            total += Number(gasto.valor)
+            total += valorItem
         }else{
-            total -= Number(gasto.valor)
+            total -= valorItem
         }
 
         lista.innerHTML += `
         <div class="${gasto.tipo === "renda" ? "renda" : "gasto"}">
-            ${nomeItem} - ${sinal} R$ ${gasto.valor}
+            ${nomeItem} - ${sinal} R$ ${valorItem.toFixed(2)}
 
             <button onclick="excluirGasto(${index})">
                 Excluir
@@ -363,10 +364,10 @@ function atualizarTela(){
         `
 
         categorias.push(nomeItem)
-        valores.push(Number(gasto.valor))
+        valores.push(valorItem)
     })
 
-    document.getElementById("total").innerText = `R$ ${total}`
+    document.getElementById("total").innerText = `R$ ${total.toFixed(2)}`
 
     let ctx = document.getElementById("grafico")
 
@@ -609,11 +610,11 @@ function adicionarRenda(){
         return
     }
 
-   gastos.push({
-    categoria: nome,
-    valor: valor,
-    tipo: "renda"
-})
+    gastos.push({
+        categoria: nome,
+        valor: valor,
+        tipo: "renda"
+    })
 
     localStorage.setItem("gastos", JSON.stringify(gastos))
 

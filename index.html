@@ -219,6 +219,10 @@ body{
     Criar Conta
 </button>
 
+     <button onclick="ativarLicenca()">
+    Ativar Código
+</button>
+
    <button onclick="trocarSenha()">
 Trocar Senha
 </button>
@@ -310,7 +314,28 @@ R$ 0
 <script>
 
 let gastos = JSON.parse(localStorage.getItem("gastos")) || []
+
 let valoresOcultos = false
+
+let codigosValidos = ["FIN-1234", "FIN-5678", "FIN-9999"]
+
+function ativarLicenca(){
+
+    let codigo = prompt("Digite seu código de ativação:")
+
+    if(codigosValidos.includes(codigo)){
+
+        localStorage.setItem("licencaAtiva", "sim")
+        localStorage.setItem("codigoUsado", codigo)
+
+        alert("Aplicativo ativado com sucesso!")
+
+    }else{
+
+        alert("Código inválido")
+    }
+}
+
 
 function adicionarGasto(){
 
@@ -581,6 +606,13 @@ function fazerLogin(){
 
     let usuarioSalvo = localStorage.getItem("usuario")
     let senhaSalva = localStorage.getItem("senha")
+
+    let licencaAtiva = localStorage.getItem("licencaAtiva")
+
+if(licencaAtiva !== "sim"){
+    alert("Ative seu código primeiro!")
+    return
+}
 
     if(usuarioSalvo === null || senhaSalva === null){
 

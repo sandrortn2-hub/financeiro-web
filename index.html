@@ -227,6 +227,10 @@ Trocar Senha
     Resetar Conta
 </button>
 
+<button onclick="limparGastos()">
+    Limpar Lançamentos
+</button>
+
 </div>
 
 <div id="appTela" style="display:none;">    
@@ -616,6 +620,13 @@ function adicionarRenda(){
     atualizarTela()
 
     alert("Renda adicionada com sucesso!")
+}
+
+function limparGastos(){
+    localStorage.removeItem("gastos")
+    gastos = []
+    atualizarTela()
+    alert("Lançamentos apagados!")
 }
 
 atualizarTela()

@@ -602,16 +602,16 @@ function limparConta(){
 
 function adicionarRenda(){
 
-    let nome = prompt("Nome da renda:")
+    let categoria = prompt("Nome da renda:")
     let valor = Number(prompt("Valor da renda:"))
 
-    if(!nome || !valor){
+    if(!categoria || !valor){
         alert("Preencha nome e valor da renda")
         return
     }
 
     gastos.push({
-        categoria: nome,
+        categoria: categoria,
         valor: valor,
         tipo: "renda"
     })

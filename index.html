@@ -412,10 +412,11 @@ if(gasto.tipo === "renda"){
         type: "bar",
         data: {
             labels: categorias,
-            datasets: [{
-            label: "Rendas (+) e Gastos (-)",    
-                data: valores
-            }]
+        datasets: [{
+    label: "Rendas (+) e Gastos (-)",
+    data: valores,
+    backgroundColor: valores.map(valor => valor >= 0 ? "#00aa55" : "#ff4444")
+}]   
         }
     })
 }

@@ -384,13 +384,32 @@ function atualizarTela(){
 
         let nomeItem = gasto.categoria
         let valorItem = Number(gasto.valor)
-        let sinal = gasto.tipo === "renda" ? "+" : "-"
+       let sinal = gasto.tipo === "renda" ? "+" : "-"
 
-        if(gasto.tipo === "renda"){
-            total += valorItem
-        }else{
-            total -= valorItem
-        }
+if(gasto.tipo === "cartao"){
+
+    lista.innerHTML += `
+        <div class="gasto">
+            💳 ${gasto.nome}<br>
+            Total: R$ ${gasto.valor.toFixed(2)}<br>
+            Parcelas: ${gasto.parcelas}x de R$ ${gasto.valorParcela.toFixed(2)}
+        </div>
+    `
+
+    total -= gasto.valorParcela
+
+}
+else if(gasto.tipo === "renda"){
+
+    total += valorItem
+
+}
+else{
+
+    total -= valorItem
+
+}
+
 
         lista.innerHTML += `
         <div class="${gasto.tipo === "renda" ? "renda" : "gasto"}">

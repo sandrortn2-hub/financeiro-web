@@ -720,6 +720,10 @@ function adicionarCartao(){
     localStorage.setItem("gastos", JSON.stringify(gastos));
 
     atualizarLista();
+
+    if(valoresOcultos){
+        ocultarValores();
+    }
 }
 
 function limparGastos(){

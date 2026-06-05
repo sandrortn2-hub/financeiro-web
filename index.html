@@ -396,11 +396,9 @@ function atualizarTela(){
     <div class="gasto">
         💳 ${gasto.nome}<br>
 
-        ${valoresOcultos ? "••••••" : "Data: " + (gasto.data || "Sem data")}<br>
-
-        ${valoresOcultos ? "••••••" : "Total: R$ " + valorItem.toFixed(2)}<br>
-
-        ${valoresOcultos ? "••••••" : "Parcelas: " + gasto.parcelas + "x de R$ " + parcela.toFixed(2)}
+       ${valoresOcultos ? "••••••" : "Data: " + (gasto.data || "Sem data")}<br>
+Fatura: TESTE<br>
+${valoresOcultos ? "••••••" : "Total: R$ " + valorItem.toFixed(2)}<br>
 
         <button onclick="excluirGasto(${index})">
             Excluir
@@ -719,14 +717,19 @@ function adicionarCartao(){
 
     let valorParcela = valor / parcelas;
 
-        gastos.push({
-        nome: nome,
-        valor: valor,
-        tipo: "cartao",
-        parcelas: parcelas,
-        valorParcela: valorParcela,
-        data: new Date().toLocaleDateString("pt-BR")
-    });
+       gastos.push({
+    nome: nome,
+    valor: valor,
+    tipo: "cartao",
+    parcelas: parcelas,
+    valorParcela: valorParcela,
+    data: new Date().toLocaleDateString("pt-BR"),
+
+    mesFatura:
+        String(new Date().getMonth() + 1).padStart(2,"0")
+        + "/"
+        + new Date().getFullYear()
+});
 
         localStorage.setItem("gastos", JSON.stringify(gastos));
 

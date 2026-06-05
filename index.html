@@ -397,7 +397,7 @@ function atualizarTela(){
         💳 ${gasto.nome}<br>
 
        ${valoresOcultos ? "••••••" : "Data: " + (gasto.data || "Sem data")}<br>
-Fatura: TESTE<br>
+Fatura: ${gasto.mesFatura || "Sem fatura"}<br>
 ${valoresOcultos ? "••••••" : "Total: R$ " + valorItem.toFixed(2)}<br>
 
         <button onclick="excluirGasto(${index})">

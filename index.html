@@ -392,17 +392,21 @@ function atualizarTela(){
 
             total -= parcela
 
-            lista.innerHTML += `
-                <div class="gasto">
-                    💳 ${gasto.nome}<br>
-                    ${valoresOcultos ? "••••••" : "Total: R$ " + valorItem.toFixed(2)}<br>
-                    ${valoresOcultos ? "••••••" : "Parcelas: " + gasto.parcelas + "x de R$ " + parcela.toFixed(2)}
+           lista.innerHTML += `
+    <div class="gasto">
+        💳 ${gasto.nome}<br>
 
-                    <button onclick="excluirGasto(${index})">
-                        Excluir
-                    </button>
-                </div>
-            `
+        ${valoresOcultos ? "••••••" : "Data: " + (gasto.data || "Sem data")}<br>
+
+        ${valoresOcultos ? "••••••" : "Total: R$ " + valorItem.toFixed(2)}<br>
+
+        ${valoresOcultos ? "••••••" : "Parcelas: " + gasto.parcelas + "x de R$ " + parcela.toFixed(2)}
+
+        <button onclick="excluirGasto(${index})">
+            Excluir
+        </button>
+    </div>
+`
 
             categorias.push(nomeItem)
             valores.push(-parcela)
@@ -715,21 +719,24 @@ function adicionarCartao(){
 
     let valorParcela = valor / parcelas;
 
-    gastos.push({
+        gastos.push({
         nome: nome,
         valor: valor,
         tipo: "cartao",
         parcelas: parcelas,
-        valorParcela: valorParcela
+        valorParcela: valorParcela,
+        data: new Date().toLocaleDateString("pt-BR")
     });
 
-       localStorage.setItem("gastos", JSON.stringify(gastos));
-
-    gastos = JSON.parse(localStorage.getItem("gastos")) || [];
+        localStorage.setItem("gastos", JSON.stringify(gastos));
 
     atualizarTela();
 
-}
+    setTimeout(() => {
+        atualizarTela();
+    }, 200);
+
+}   
 
 
 function limparGastos(){

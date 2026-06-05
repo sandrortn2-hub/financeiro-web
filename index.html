@@ -382,55 +382,61 @@ function atualizarTela(){
 
     gastos.forEach((gasto, index) => {
 
-        let nomeItem = gasto.categoria
+        let nomeItem = gasto.tipo === "cartao" ? gasto.nome : gasto.categoria
         let valorItem = Number(gasto.valor)
-       let sinal = gasto.tipo === "renda" ? "+" : "-"
+        let sinal = gasto.tipo === "renda" ? "+" : "-"
 
-if(gasto.tipo === "cartao"){
+        if(gasto.tipo === "cartao"){
 
-    lista.innerHTML += `
-        <div class="gasto">
-            💳 ${gasto.nome}<br>
-            Total: R$ ${gasto.valor.toFixed(2)}<br>
-            Parcelas: ${gasto.parcelas}x de R$ ${gasto.valorParcela.toFixed(2)}
-        </div>
-    `
+            let parcela = Number(gasto.valorParcela)
 
-    total -= gasto.valorParcela
+            total -= parcela
 
-}
-else if(gasto.tipo === "renda"){
+            lista.innerHTML += `
+                <div class="gasto">
+                    💳 ${gasto.nome}<br>
+                    ${valoresOcultos ? "••••••" : "Total: R$ " + valorItem.toFixed(2)}<br>
+                    ${valoresOcultos ? "••••••" : "Parcelas: " + gasto.parcelas + "x de R$ " + parcela.toFixed(2)}
 
-    total += valorItem
+                    <button onclick="excluirGasto(${index})">
+                        Excluir
+                    </button>
+                </div>
+            `
 
-}
-else{
+            categorias.push(nomeItem)
+            valores.push(-parcela)
 
-    total -= valorItem
+        }else{
 
-}
+            if(gasto.tipo === "renda"){
+                total += valorItem
+            }else{
+                total -= valorItem
+            }
 
+            lista.innerHTML += `
+                <div class="${gasto.tipo === "renda" ? "renda" : "gasto"}">
+                    ${nomeItem} - ${valoresOcultos ? "••••••" : sinal + " R$ " + valorItem.toFixed(2)}
 
-        lista.innerHTML += `
-        <div class="${gasto.tipo === "renda" ? "renda" : "gasto"}">
-        ${nomeItem} - ${valoresOcultos ? "••••••" : sinal + " R$ " + valorItem.toFixed(2)}    
+                    <button onclick="excluirGasto(${index})">
+                        Excluir
+                    </button>
+                </div>
+            `
 
-            <button onclick="excluirGasto(${index})">
-                Excluir
-            </button>
-        </div>
-        `
+            categorias.push(nomeItem)
 
-       categorias.push(nomeItem)
-
-if(gasto.tipo === "renda"){
-    valores.push(valorItem)
-}else{
-    valores.push(-valorItem)
-} 
+            if(gasto.tipo === "renda"){
+                valores.push(valorItem)
+            }else{
+                valores.push(-valorItem)
+            }
+        }
     })
 
-    document.getElementById("total").innerText = valoresOcultos ? "R$ ••••••" : `R$ ${total.toFixed(2)}`
+    document.getElementById("total").innerText =
+        valoresOcultos ? "R$ ••••••" : `R$ ${total.toFixed(2)}`
 
     let ctx = document.getElementById("grafico")
 
@@ -454,19 +460,19 @@ if(gasto.tipo === "renda"){
         window.meuGraficoBarra.destroy()
     }
 
-window.meuGraficoBarra = new Chart(ctxBarra, {
-    type: "bar",
-    data: {
-        labels: categorias,
-        datasets: [{
-            label: "Rendas (+) e Gastos (-)",
-            data: valores,
-        backgroundColor: valores.map(valor =>
-    valor < 0 ? "#ff4444" : "#00aa55"
-        )    
-        }]
-    }
-})
+    window.meuGraficoBarra = new Chart(ctxBarra, {
+        type: "bar",
+        data: {
+            labels: categorias,
+            datasets: [{
+                label: "Rendas (+) e Gastos (-)",
+                data: valores,
+                backgroundColor: valores.map(valor =>
+                    valor < 0 ? "#ff4444" : "#00aa55"
+                )
+            }]
+        }
+    })
 }
 
 function excluirGasto(index){
@@ -717,14 +723,14 @@ function adicionarCartao(){
         valorParcela: valorParcela
     });
 
-    localStorage.setItem("gastos", JSON.stringify(gastos));
+       localStorage.setItem("gastos", JSON.stringify(gastos));
 
-    atualizarLista();
+    gastos = JSON.parse(localStorage.getItem("gastos")) || [];
 
-    if(valoresOcultos){
-        ocultarValores();
-    }
+    atualizarTela();
+
 }
+
 
 function limparGastos(){
     localStorage.removeItem("gastos")

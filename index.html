@@ -314,6 +314,22 @@ R$ 0
 
 <div class="dashboard">
 
+    </div>
+
+    <div class="card">
+
+    <h2>Meta de Economia</h2>
+
+    <input type="number" id="metaValor" placeholder="Digite sua meta">
+
+    <button onclick="salvarMeta()">
+        Salvar Meta
+    </button>
+
+    <p id="statusMeta">Nenhuma meta definida</p>
+
+</div>
+
     <div class="box">
         <h3>Rendas</h3>
         <p id="totalRendas">R$ 0.00</p>
@@ -351,6 +367,8 @@ R$ 0
 <script>
 
 let gastos = JSON.parse(localStorage.getItem("gastos")) || []
+
+let metaEconomia = Number(localStorage.getItem("metaEconomia")) || 0
 
 let valoresOcultos = false
 
@@ -405,6 +423,27 @@ function adicionarGasto(){
 function toggleValores(){
 
     valoresOcultos = !valoresOcultos
+
+    atualizarTela()
+}
+
+function salvarMeta(){
+
+    let valorMeta = Number(
+        document.getElementById("metaValor").value
+    )
+
+    if(valorMeta <= 0){
+        alert("Digite uma meta válida!")
+        return
+    }
+
+    metaEconomia = valorMeta
+
+    localStorage.setItem(
+        "metaEconomia",
+        metaEconomia
+    )
 
     atualizarTela()
 }
@@ -517,6 +556,28 @@ function atualizarTela(){
     }else{
         alerta.innerText = ""
     }
+
+    let statusMeta = document.getElementById("statusMeta")
+
+if(metaEconomia > 0){
+
+    if(total >= metaEconomia){
+
+        statusMeta.innerHTML =
+            `🎉 Meta atingida! Sobrou R$ ${total.toFixed(2)}`
+
+        statusMeta.style.color = "#00ff88"
+
+    }else{
+
+        let falta = metaEconomia - total
+
+        statusMeta.innerHTML =
+            `Faltam R$ ${falta.toFixed(2)} para atingir a meta`
+
+        statusMeta.style.color = "#ffaa00"
+    }
+}
 
     let ctx = document.getElementById("grafico")
 

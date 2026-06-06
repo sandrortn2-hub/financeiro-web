@@ -251,6 +251,10 @@ Trocar Senha
     Relatórios
 </button>
 
+    <button onclick="exportarPDF()">
+    Exportar PDF
+</button>
+
     <button onclick="mostrarFatura()">
     Fatura do Mês
 </button>
@@ -334,6 +338,14 @@ R$ 0
         <h3>Rendas</h3>
         <p id="totalRendas">R$ 0.00</p>
     </div>
+
+    <div style="background:#333; border-radius:10px; overflow:hidden; height:20px; margin-top:10px;">
+
+    <div id="barraMeta"
+         style="height:20px; width:0%; background:#ffaa00;">
+    </div>
+
+</div>
 
     <div class="box">
         <h3>Gastos</h3>
@@ -560,6 +572,27 @@ function atualizarTela(){
     let statusMeta = document.getElementById("statusMeta")
 
 if(metaEconomia > 0){
+
+    let progresso = (total / metaEconomia) * 100
+
+if(progresso < 0){
+    progresso = 0
+}
+
+if(progresso > 100){
+    progresso = 100
+}
+
+document.getElementById("barraMeta").style.width =
+    progresso + "%"
+
+    if(total >= metaEconomia){
+    document.getElementById("barraMeta").style.background = "#00aa55"
+}else if(total < 0){
+    document.getElementById("barraMeta").style.background = "#ff4444"
+}else{
+    document.getElementById("barraMeta").style.background = "#ffaa00"
+}
 
     if(total >= metaEconomia){
 
@@ -910,6 +943,11 @@ function historicoFaturas(){
     })
 
     alert(texto)
+}
+
+function exportarPDF(){
+
+    window.print()
 }
 
 atualizarTela()

@@ -404,12 +404,21 @@ R$ 0
     <h2>Resumo Financeiro</h2>
 
     <p id="resumoFinanceiro">
-        Nenhum resumo disponível
-    </p>
+    Nenhum resumo disponível
+</p>
 
-   </div>
+<div class="scoreBox">
+
+    <h3>Score Financeiro</h3>
+
+    <div id="scoreFinanceiro">
+        0
+    </div>
 
 </div>
+
+</div>
+
 
     <div class="card">
 
@@ -734,6 +743,31 @@ if(total > 0){
 
 document.getElementById("resumoFinanceiro").innerText =
     resumo
+
+let score = 100
+
+if(total < 0){
+    score -= 40
+}
+
+if(totalGastos > totalRendas){
+    score -= 30
+}
+
+if(totalCartao > 1000){
+    score -= 20
+}
+
+if(score < 0){
+    score = 0
+}
+
+document.getElementById("scoreFinanceiro").innerText =
+    score + " pontos"
+
+if(window.meuGrafico){
+    window.meuGrafico.destroy()
+}
 
     if(window.meuGrafico){
         window.meuGrafico.destroy()

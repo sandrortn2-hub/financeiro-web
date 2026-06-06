@@ -399,7 +399,15 @@ R$ 0
 
 <div class="dashboard">
 
-    </div>
+    <div class="card">
+
+    <h2>Resumo Financeiro</h2>
+
+    <p id="resumoFinanceiro">
+        Nenhum resumo disponível
+    </p>
+
+</div>
 
     <div class="card">
 
@@ -708,6 +716,22 @@ document.getElementById("barraMeta").style.width =
     new Date().toLocaleDateString("pt-BR")
 
     let ctx = document.getElementById("grafico")
+
+    let resumo = ""
+
+if(total > 0){
+    resumo =
+    "✅ Você está positivo financeiramente."
+}else if(total < 0){
+    resumo =
+    "⚠️ Seus gastos estão maiores que sua renda."
+}else{
+    resumo =
+    "📊 Seu saldo está equilibrado."
+}
+
+document.getElementById("resumoFinanceiro").innerText =
+    resumo
 
     if(window.meuGrafico){
         window.meuGrafico.destroy()

@@ -304,10 +304,11 @@ Adicionar gasto
 
 <h2>Saldo final</h2>
 
-<div class="total" id="total">
-<p id="alertaFinanceiro"></p>    
+<div class="total" id="total">   
 R$ 0
 </div>
+
+<p id="alertaFinanceiro"></p> 
 
 </div>
 
@@ -354,6 +355,8 @@ let gastos = JSON.parse(localStorage.getItem("gastos")) || []
 let valoresOcultos = false
 
 let codigosValidos = ["FIN-1234", "FIN-5678", "FIN-9999"]
+
+
 
 function ativarLicenca(){
 
@@ -416,9 +419,10 @@ function atualizarTela(){
     let total = 0
     let categorias = []
     let valores = []
+
     let totalRendas = 0
-let totalGastos = 0
-let totalCartao = 0
+    let totalGastos = 0
+    let totalCartao = 0
 
     gastos.forEach((gasto, index) => {
 
@@ -429,37 +433,36 @@ let totalCartao = 0
         if(gasto.tipo === "cartao"){
 
             let parcela = Number(gasto.valorParcela)
-           totalCartao += parcela
 
             total -= parcela
+            totalCartao += parcela
 
-           lista.innerHTML += `
-    <div class="gasto">
-        💳 ${gasto.nome}<br>
+            lista.innerHTML += `
+                <div class="gasto">
+                    💳 ${gasto.nome}<br>
+                    ${valoresOcultos ? "••••••" : "Data: " + (gasto.data || "Sem data")}<br>
+                    ${valoresOcultos ? "••••••" : "Fatura: " + (gasto.mesFatura || "Sem fatura")}<br>
+                    ${valoresOcultos ? "••••••" : "Total: R$ " + valorItem.toFixed(2)}<br>
+                    ${valoresOcultos ? "••••••" : "Parcelas: " + gasto.parcelas + "x de R$ " + parcela.toFixed(2)}
 
-       ${valoresOcultos ? "••••••" : "Data: " + (gasto.data || "Sem data")}<br>
-Fatura: ${gasto.mesFatura || "Sem fatura"}<br>
-${valoresOcultos ? "••••••" : "Total: R$ " + valorItem.toFixed(2)}<br>
-${valoresOcultos ? "••••••" : "Parcelas: " + gasto.parcelas + "x de R$ " + parcela.toFixed(2)}<br>
-
-        <button onclick="excluirGasto(${index})">
-            Excluir
-        </button>
-    </div>
-`
+                    <button onclick="excluirGasto(${index})">
+                        Excluir
+                    </button>
+                </div>
+            `
 
             categorias.push(nomeItem)
             valores.push(-parcela)
 
         }else{
 
-           if(gasto.tipo === "renda"){
-    total += valorItem
-    totalRendas += valorItem
-}else{
-    total -= valorItem
-    totalGastos += valorItem
-}
+            if(gasto.tipo === "renda"){
+                total += valorItem
+                totalRendas += valorItem
+            }else{
+                total -= valorItem
+                totalGastos += valorItem
+            }
 
             lista.innerHTML += `
                 <div class="${gasto.tipo === "renda" ? "renda" : "gasto"}">
@@ -484,78 +487,77 @@ ${valoresOcultos ? "••••••" : "Parcelas: " + gasto.parcelas + "x de 
     document.getElementById("total").innerText =
         valoresOcultos ? "R$ ••••••" : `R$ ${total.toFixed(2)}`
 
+    document.getElementById("totalRendas").innerText =
+        "R$ " + totalRendas.toFixed(2)
+
+    document.getElementById("totalGastos").innerText =
+        "R$ " + totalGastos.toFixed(2)
+
+    document.getElementById("totalCartao").innerText =
+        "R$ " + totalCartao.toFixed(2)
+
+    document.getElementById("saldoAtual").innerText =
+        "R$ " + total.toFixed(2)
+
     let totalPrincipal = document.getElementById("total")
-
-if(total < 0){
-    totalPrincipal.style.color = "#ff4444"
-}else{
-    totalPrincipal.style.color = "#00ff88"
-} 
-
+    let saldoBox = document.getElementById("saldoAtual")
     let alerta = document.getElementById("alertaFinanceiro")
 
-if(total <= -1000){
-    alerta.innerText = "⚠️ Cuidado com os gastos!"
-    alerta.style.color = "#ff4444"
-}else{
-    alerta.innerText = ""
-}
+    if(total < 0){
+        totalPrincipal.style.color = "#ff4444"
+        saldoBox.style.color = "#ff4444"
+    }else{
+        totalPrincipal.style.color = "#00ff88"
+        saldoBox.style.color = "#00ff88"
+    }
 
-    let saldoBox = document.getElementById("saldoAtual")
-
-if(total < 0){
-    saldoBox.style.color = "#ff4444"
-}else{
-    saldoBox.style.color = "#00ff88"
-}    
+    if(total <= -1000){
+        alerta.innerText = "⚠️ Cuidado com os gastos!"
+        alerta.style.color = "#ff4444"
+    }else{
+        alerta.innerText = ""
+    }
 
     let ctx = document.getElementById("grafico")
 
     if(window.meuGrafico){
         window.meuGrafico.destroy()
     }
+
     window.meuGrafico = new Chart(ctx, {
-    type: "pie",
-    data: {
-        labels: categorias,
-        datasets: [{
-            data: valores
-        }]
+        type: "pie",
+        data: {
+            labels: categorias,
+            datasets: [{
+                data: valores
+            }]
+        }
+    })
+
+    let ctxBarra = document.getElementById("graficoBarra")
+
+    if(window.meuGraficoBarra){
+        window.meuGraficoBarra.destroy()
     }
-})
 
-   let ctxBarra = document.getElementById("graficoBarra")
+    window.meuGraficoBarra = new Chart(ctxBarra, {
+        type: "bar",
+        data: {
+            labels: categorias,
+            datasets: [{
+                label: "Rendas (+) e Gastos (-)",
+                data: valores,
+                backgroundColor: valores.map(valor =>
+                    valor < 0 ? "#ff4444" : "#00aa55"
+                )
+            }]
+        }
+    })
 
-if(window.meuGraficoBarra){
-    window.meuGraficoBarra.destroy()
-}
-
-window.meuGraficoBarra = new Chart(ctxBarra, {
-    type: "bar",
-    data: {
-        labels: categorias,
-        datasets: [{
-            label: "Rendas (+) e Gastos (-)",
-            data: valores,
-            backgroundColor: valores.map(valor =>
-                valor < 0 ? "#ff4444" : "#00aa55"
-            )
-        }]
-    }
-})
-
-document.getElementById("totalRendas").innerText =
-    "R$ " + totalRendas.toFixed(2)
-
-document.getElementById("totalGastos").innerText =
-    "R$ " + totalGastos.toFixed(2)
-
-document.getElementById("totalCartao").innerText =
-    "R$ " + totalCartao.toFixed(2)
-
-document.getElementById("saldoAtual").innerText =
-    "R$ " + total.toFixed(2)
-
+console.log("Rendas:", totalRendas)
+console.log("Gastos:", totalGastos)
+console.log("Cartão:", totalCartao)
+console.log("Saldo:", total)   
 }
 
 function excluirGasto(index){

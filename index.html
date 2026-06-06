@@ -385,9 +385,10 @@ function adicionarGasto(){
     }
 
     gastos.push({
-        categoria,
-        valor
-    })
+    categoria: categoria,
+    valor: valor,
+    tipo: "gasto"
+})
 
     localStorage.setItem(
         "gastos",
@@ -481,6 +482,14 @@ ${valoresOcultos ? "••••••" : "Parcelas: " + gasto.parcelas + "x de 
 
     document.getElementById("total").innerText =
         valoresOcultos ? "R$ ••••••" : `R$ ${total.toFixed(2)}`
+
+    let saldoBox = document.getElementById("saldoAtual")
+
+if(total < 0){
+    saldoBox.style.color = "#ff4444"
+}else{
+    saldoBox.style.color = "#00ff88"
+}    
 
     let ctx = document.getElementById("grafico")
 

@@ -38,6 +38,7 @@ body{
     background:#111;
     padding:10px;
     border-radius:15px;
+    min-height:100vh;
 }
 
 .container{
@@ -84,7 +85,7 @@ html, body{
     .sidebar{
         position:relative;
         width:100%;
-        height:auto;
+       min-height:100vh;
     }
 
     .container{
@@ -223,6 +224,24 @@ body{
     text-align:center;
     margin-top:40px;
     color:black;
+}
+
+   @media print{
+
+    body{
+        zoom: 80%;
+    }
+
+    #lista{
+        page-break-inside:auto;
+    }
+
+    .gasto,
+    .renda{
+        page-break-inside:avoid;
+        margin-bottom:10px;
+    }
+
 }
 
     .total{

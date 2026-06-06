@@ -305,6 +305,7 @@ Adicionar gasto
 <h2>Saldo final</h2>
 
 <div class="total" id="total">
+<p id="alertaFinanceiro"></p>    
 R$ 0
 </div>
 
@@ -489,7 +490,16 @@ if(total < 0){
     totalPrincipal.style.color = "#ff4444"
 }else{
     totalPrincipal.style.color = "#00ff88"
-}    
+} 
+
+    let alerta = document.getElementById("alertaFinanceiro")
+
+if(total <= -1000){
+    alerta.innerText = "⚠️ Cuidado com os gastos!"
+    alerta.style.color = "#ff4444"
+}else{
+    alerta.innerText = ""
+}
 
     let saldoBox = document.getElementById("saldoAtual")
 

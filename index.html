@@ -310,6 +310,30 @@ R$ 0
 
 </div>
 
+<div class="dashboard">
+
+    <div class="box">
+        <h3>Rendas</h3>
+        <p id="totalRendas">R$ 0.00</p>
+    </div>
+
+    <div class="box">
+        <h3>Gastos</h3>
+        <p id="totalGastos">R$ 0.00</p>
+    </div>
+
+    <div class="box">
+        <h3>Cartão</h3>
+        <p id="totalCartao">R$ 0.00</p>
+    </div>
+
+    <div class="box">
+        <h3>Saldo Atual</h3>
+        <p id="saldoAtual">R$ 0.00</p>
+    </div>
+
+</div>
+
 <div id="lista"></div>
 
 <div class="card" id="cardGrafico" style="display:none;">
@@ -390,6 +414,9 @@ function atualizarTela(){
     let total = 0
     let categorias = []
     let valores = []
+    let totalRendas = 0
+let totalGastos = 0
+let totalCartao = 0
 
     gastos.forEach((gasto, index) => {
 
@@ -400,6 +427,7 @@ function atualizarTela(){
         if(gasto.tipo === "cartao"){
 
             let parcela = Number(gasto.valorParcela)
+           totalCartao += parcela
 
             total -= parcela
 
@@ -410,6 +438,7 @@ function atualizarTela(){
        ${valoresOcultos ? "••••••" : "Data: " + (gasto.data || "Sem data")}<br>
 Fatura: ${gasto.mesFatura || "Sem fatura"}<br>
 ${valoresOcultos ? "••••••" : "Total: R$ " + valorItem.toFixed(2)}<br>
+${valoresOcultos ? "••••••" : "Parcelas: " + gasto.parcelas + "x de R$ " + parcela.toFixed(2)}<br>
 
         <button onclick="excluirGasto(${index})">
             Excluir
@@ -422,11 +451,13 @@ ${valoresOcultos ? "••••••" : "Total: R$ " + valorItem.toFixed(2)}<b
 
         }else{
 
-            if(gasto.tipo === "renda"){
-                total += valorItem
-            }else{
-                total -= valorItem
-            }
+           if(gasto.tipo === "renda"){
+    total += valorItem
+    totalRendas += valorItem
+}else{
+    total -= valorItem
+    totalGastos += valorItem
+}
 
             lista.innerHTML += `
                 <div class="${gasto.tipo === "renda" ? "renda" : "gasto"}">
@@ -456,36 +487,48 @@ ${valoresOcultos ? "••••••" : "Total: R$ " + valorItem.toFixed(2)}<b
     if(window.meuGrafico){
         window.meuGrafico.destroy()
     }
-
     window.meuGrafico = new Chart(ctx, {
-        type: "pie",
-        data: {
-            labels: categorias,
-            datasets: [{
-                data: valores
-            }]
-        }
-    })
-
-    let ctxBarra = document.getElementById("graficoBarra")
-
-    if(window.meuGraficoBarra){
-        window.meuGraficoBarra.destroy()
+    type: "pie",
+    data: {
+        labels: categorias,
+        datasets: [{
+            data: valores
+        }]
     }
+})
 
-    window.meuGraficoBarra = new Chart(ctxBarra, {
-        type: "bar",
-        data: {
-            labels: categorias,
-            datasets: [{
-                label: "Rendas (+) e Gastos (-)",
-                data: valores,
-                backgroundColor: valores.map(valor =>
-                    valor < 0 ? "#ff4444" : "#00aa55"
-                )
-            }]
-        }
-    })
+   let ctxBarra = document.getElementById("graficoBarra")
+
+if(window.meuGraficoBarra){
+    window.meuGraficoBarra.destroy()
+}
+
+window.meuGraficoBarra = new Chart(ctxBarra, {
+    type: "bar",
+    data: {
+        labels: categorias,
+        datasets: [{
+            label: "Rendas (+) e Gastos (-)",
+            data: valores,
+            backgroundColor: valores.map(valor =>
+                valor < 0 ? "#ff4444" : "#00aa55"
+            )
+        }]
+    }
+})
+
+document.getElementById("totalRendas").innerText =
+    "R$ " + totalRendas.toFixed(2)
+
+document.getElementById("totalGastos").innerText =
+    "R$ " + totalGastos.toFixed(2)
+
+document.getElementById("totalCartao").innerText =
+    "R$ " + totalCartao.toFixed(2)
+
+document.getElementById("saldoAtual").innerText =
+    "R$ " + total.toFixed(2)
+
 }
 
 function excluirGasto(index){
@@ -778,7 +821,6 @@ function historicoFaturas(){
 
     alert(texto)
 }
-
 
 atualizarTela()
 

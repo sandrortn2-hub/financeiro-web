@@ -316,6 +316,8 @@ Trocar Senha
 
 <div class="container">
 
+<p id="dataRelatorio"></p>    
+
 <h1>Controle Financeiro</h1>
 
 <div class="card">
@@ -637,6 +639,10 @@ document.getElementById("barraMeta").style.width =
         statusMeta.style.color = "#ffaa00"
     }
 }
+
+    document.getElementById("dataRelatorio").innerText =
+    "Relatório gerado em: " +
+    new Date().toLocaleDateString("pt-BR")
 
     let ctx = document.getElementById("grafico")
 

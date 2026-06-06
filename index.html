@@ -251,6 +251,14 @@ Trocar Senha
     Relatórios
 </button>
 
+    <button onclick="mostrarFatura()">
+    Fatura do Mês
+</button>
+
+<button onclick="historicoFaturas()">
+    Histórico de Faturas
+</button>
+
     <button onclick="toggleTema()">
         Configurações
     </button>
@@ -262,6 +270,7 @@ Trocar Senha
 <button onclick="adicionarRenda()">
     Adicionar Renda
 </button>
+
 
 <button onclick="adicionarCartao()">Compra no Cartão</button>
 
@@ -370,6 +379,8 @@ function toggleValores(){
 
     atualizarTela()
 }
+
+
 
 function atualizarTela(){
 
@@ -748,6 +759,26 @@ function limparGastos(){
     atualizarTela()
     alert("Lançamentos apagados!")
 }
+
+function historicoFaturas(){
+
+    let texto = "HISTÓRICO DE FATURAS\n\n"
+
+    gastos.forEach(gasto => {
+
+        if(gasto.tipo === "cartao"){
+
+            texto +=
+                `💳 ${gasto.nome}\n` +
+                `Data: ${gasto.data || "Sem data"}\n` +
+                `Fatura: ${gasto.mesFatura || "Sem fatura"}\n` +
+                `${gasto.parcelas}x de R$ ${gasto.valorParcela.toFixed(2)}\n\n`
+        }
+    })
+
+    alert(texto)
+}
+
 
 atualizarTela()
 

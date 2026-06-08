@@ -532,7 +532,7 @@ function adicionarGasto(){
     categoria: categoria,
     valor: valor,
     tipo: "gasto",
-    data: new Date().toLocaleDateString("pt-BR")
+   data: new Date().toLocaleString("pt-BR")
 })
 
     localStorage.setItem(
@@ -1030,11 +1030,12 @@ function adicionarRenda(){
         return
     }
 
-    gastos.push({
-        categoria: categoria,
-        valor: valor,
-        tipo: "renda"
-    })
+   gastos.push({
+    categoria: categoria,
+    valor: valor,
+    tipo: "renda",
+    data: new Date().toLocaleString("pt-BR")
+})
 
     localStorage.setItem("gastos", JSON.stringify(gastos))
 
@@ -1062,7 +1063,7 @@ function adicionarCartao(){
     tipo: "cartao",
     parcelas: parcelas,
     valorParcela: valorParcela,
-    data: new Date().toLocaleDateString("pt-BR"),
+    data: new Date().toLocaleString("pt-BR") ,
 
     mesFatura:
         String(new Date().getMonth() + 1).padStart(2,"0")

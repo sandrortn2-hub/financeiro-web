@@ -528,10 +528,11 @@ function adicionarGasto(){
         return
     }
 
-    gastos.push({
+   gastos.push({
     categoria: categoria,
     valor: valor,
-    tipo: "gasto"
+    tipo: "gasto",
+    data: new Date().toLocaleDateString("pt-BR")
 })
 
     localStorage.setItem(
@@ -625,15 +626,21 @@ function atualizarTela(){
                 totalGastos += valorItem
             }
 
-            lista.innerHTML += `
-                <div class="${gasto.tipo === "renda" ? "renda" : "gasto"}">
-                    ${nomeItem} - ${valoresOcultos ? "••••••" : sinal + " R$ " + valorItem.toFixed(2)}
+           lista.innerHTML += `
+    <div class="${gasto.tipo === "renda" ? "renda" : "gasto"}">
 
-                    <button onclick="excluirGasto(${index})">
-                        Excluir
-                    </button>
-                </div>
-            `
+        ${nomeItem}<br>
+
+        ${valoresOcultos ? "••••••" : "Data: " + (gasto.data || "Sem data")}<br>
+
+        ${valoresOcultos ? "••••••" : sinal + " R$ " + valorItem.toFixed(2)}
+
+        <button onclick="excluirGasto(${index})">
+            Excluir
+        </button>
+
+    </div>
+`
 
             categorias.push(nomeItem)
 

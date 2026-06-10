@@ -284,9 +284,10 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 
 import {
 
- getFirestore,
+  getFirestore,
  collection,
- addDoc
+ addDoc,
+ getDocs
 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
 
@@ -313,6 +314,26 @@ const db = getFirestore(app)
 window.db = db
 window.addDoc = addDoc
 window.collection = collection
+
+async function carregarFirebase() {
+
+    let consulta = await getDocs(
+        collection(window.db, "gastos")
+    )
+
+    gastos = []
+
+    consulta.forEach((doc) => {
+
+        gastos.push(doc.data())
+
+    })
+
+    atualizarTela()
+
+}
+
+carregarFirebase()
 
 console.log("Firebase conectado")
 

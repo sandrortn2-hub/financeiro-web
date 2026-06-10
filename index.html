@@ -282,6 +282,14 @@ html, body{
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
 
+import {
+
+ getFirestore,
+ collection,
+ addDoc
+
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+
 const firebaseConfig = {
 
   apiKey: "AIzaSyDCnbnlOupFWbcLdrV57L11MbncAB1Ju5s",
@@ -299,6 +307,8 @@ const firebaseConfig = {
 }
 
 const app = initializeApp(firebaseConfig)
+
+const db = getFirestore(app)
 
 console.log("Firebase conectado")
 
@@ -565,6 +575,18 @@ function adicionarGasto(){
         "gastos",
         JSON.stringify(gastos)
     )
+
+   addDoc(collection(db, "gastos"), {
+
+ categoria: categoria,
+
+ valor: valor,
+
+ tipo: tipo,
+
+ data: new Date().toLocaleString()
+
+}) 
 
     atualizarTela()
 }

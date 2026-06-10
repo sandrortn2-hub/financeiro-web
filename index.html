@@ -310,6 +310,10 @@ const app = initializeApp(firebaseConfig)
 
 const db = getFirestore(app)
 
+window.db = db
+window.addDoc = addDoc
+window.collection = collection
+
 console.log("Firebase conectado")
 
 </script>
@@ -576,7 +580,7 @@ function adicionarGasto(){
         JSON.stringify(gastos)
     )
 
-   addDoc(collection(db, "gastos"), {
+  addDoc(collection(window.db, "gastos"), {
 
  categoria: categoria,
 

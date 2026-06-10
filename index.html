@@ -580,17 +580,29 @@ function adicionarGasto(){
         JSON.stringify(gastos)
     )
 
-  addDoc(collection(window.db, "gastos"), {
+  window.addDoc(window.collection(window.db, "gastos"), {
 
- categoria: categoria,
+    categoria: categoria,
 
- valor: valor,
+    valor: valor,
 
- tipo: tipo,
+    tipo: "gasto",
 
- data: new Date().toLocaleString()
+    data: new Date().toLocaleString()
 
-}) 
+})
+
+.then(() => {
+
+    alert("Salvou no Firebase")
+
+})
+
+.catch((erro) => {
+
+    alert("Erro Firebase: " + erro.message)
+
+})
 
     atualizarTela()
 }

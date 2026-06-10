@@ -278,6 +278,32 @@ html, body{
 
 </head>
 
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
+
+const firebaseConfig = {
+
+  apiKey: "AIzaSyDCnbnlOupFWbcLdrV57L11MbncAB1Ju5s",
+
+  authDomain: "financeiro-web-baebd.firebaseapp.com",
+
+  projectId: "financeiro-web-baebd",
+
+  storageBucket: "financeiro-web-baebd.firebasestorage.app",
+
+  messagingSenderId: "604182885293",
+
+  appId: "1:604182885293:web:e2af436d7fd8e46863a724"
+
+}
+
+const app = initializeApp(firebaseConfig)
+
+console.log("Firebase conectado")
+
+</script>
+
 <body>  
 
 <div id="loginTela" class="card">

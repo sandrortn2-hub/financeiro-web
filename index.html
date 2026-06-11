@@ -1250,26 +1250,86 @@ function historicoFaturas(){
 window.exportarPDF = function(){
 
     const { jsPDF } = window.jspdf
+
     let doc = new jsPDF()
 
-    doc.setFontSize(18)
-    doc.text("Relatório Financeiro", 20, 20)
+    // TÍTULO
+    doc.setFillColor(0, 170, 85)
+    doc.rect(0, 0, 220, 30, "F")
 
-    doc.setFontSize(12)
+    doc.setTextColor(255,255,255)
+    doc.setFontSize(22)
+    doc.text("Controle Financeiro", 20, 20)
 
-    let linha = 40
+    // VOLTA COR NORMAL
+    doc.setTextColor(0,0,0)
+
+    // DATA
+    doc.setFontSize(11)
+    doc.text(
+        "Relatório gerado em: " +
+        new Date().toLocaleDateString("pt-BR"),
+        20,
+        40
+    )
+
+    let linha = 55
+
+    let total = 0
 
     gastos.forEach((gasto) => {
 
         let nome = gasto.categoria || gasto.nome || "Sem nome"
-        let valor = Number(gasto.valor || gasto.valorParcela || 0)
+
+        let valor = Number(
+            gasto.valor || gasto.valorParcela || 0
+        )
+
         let tipo = gasto.tipo || "gasto"
+
         let data = gasto.data || "Sem data"
 
-        doc.text(`${data} - ${tipo} - ${nome} - R$ ${valor.toFixed(2)}`, 20, linha)
+        if(tipo === "renda"){
+            total += valor
+            doc.setTextColor(0,150,0)
+        }else{
+            total -= valor
+            doc.setTextColor(200,0,0)
+        }
+
+        doc.text(
+            `${data} | ${nome} | R$ ${valor.toFixed(2)}`,
+            20,
+            linha
+        )
 
         linha += 10
+
     })
+
+    // TOTAL FINAL
+    linha += 10
+
+    doc.setTextColor(0,0,0)
+
+    doc.setFontSize(16)
+
+    doc.text(
+        `Saldo Final: R$ ${total.toFixed(2)}`,
+        20,
+        linha
+    )
+
+    // RODAPÉ
+    linha += 20
+
+    doc.setFontSize(10)
+
+    doc.text(
+        "Aplicativo Financeiro Premium",
+        20,
+        linha
+    )
 
     doc.save("relatorio_financeiro.pdf")
 }

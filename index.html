@@ -1208,7 +1208,7 @@ function exportarPDF(){
     window.print()
 }
 
-function exportarExcel(){
+window.exportarExcel = function(){
 
     let planilha = XLSX.utils.json_to_sheet(gastos)
 

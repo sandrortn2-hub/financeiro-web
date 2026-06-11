@@ -1247,26 +1247,31 @@ function historicoFaturas(){
     alert(texto)
 }
 
-window.exportarExcel = function(){
+window.exportarPDF = function(){
 
-    if(typeof XLSX === "undefined"){
-        alert("Erro: biblioteca Excel não carregou")
-        return
-    }
+    const { jsPDF } = window.jspdf
+    let doc = new jsPDF()
 
-    if(!gastos || gastos.length === 0){
-        alert("Não tem gastos para exportar")
-        return
-    }
+    doc.setFontSize(18)
+    doc.text("Relatório Financeiro", 20, 20)
 
-    let planilha = XLSX.utils.json_to_sheet(gastos)
-    let livro = XLSX.utils.book_new()
+    doc.setFontSize(12)
 
-    XLSX.utils.book_append_sheet(livro, planilha, "Gastos")
+    let linha = 40
 
-    XLSX.writeFile(livro, "relatorio_financeiro.xlsx")
+    gastos.forEach((gasto) => {
 
-    alert("Excel gerado com sucesso")
+        let nome = gasto.categoria || gasto.nome || "Sem nome"
+        let valor = Number(gasto.valor || gasto.valorParcela || 0)
+        let tipo = gasto.tipo || "gasto"
+        let data = gasto.data || "Sem data"
+
+        doc.text(`${data} - ${tipo} - ${nome} - R$ ${valor.toFixed(2)}`, 20, linha)
+
+        linha += 10
+    })
+
+    doc.save("relatorio_financeiro.pdf")
 }
 
 atualizarTela()

@@ -345,6 +345,32 @@ console.log("Firebase conectado")
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script>
+window.exportarExcel = function(){
+
+
+    if(typeof XLSX === "undefined"){
+        alert("Erro: biblioteca Excel não carregou")
+        return
+    }
+
+    if(!gastos || gastos.length === 0){
+        alert("Não tem gastos para exportar")
+        return
+    }
+
+    let planilha = XLSX.utils.json_to_sheet(gastos)
+    let livro = XLSX.utils.book_new()
+
+    XLSX.utils.book_append_sheet(livro, planilha, "Gastos")
+
+    XLSX.writeFile(livro, "relatorio_financeiro.xlsx")
+
+}
+</script>
+
 <body>  
 
 <div id="loginTela" class="card">

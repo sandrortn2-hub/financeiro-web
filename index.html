@@ -591,7 +591,7 @@ function adicionarGasto(){
         return
     }
 
-  gastos.push({
+ gastos.push({
     categoria: categoria,
     valor: valor,
     tipo: "gasto",
@@ -602,12 +602,14 @@ localStorage.setItem("gastos", JSON.stringify(gastos))
 
 atualizarTela()
 
-window.setDoc(window.doc(window.db, "backups", "Sandro"), {
-    gastos: gastos,
-    atualizadoEm: new Date().toLocaleString("pt-BR")
+window.addDoc(window.collection(window.db, "gastos"), {
+    categoria: categoria,
+    valor: valor,
+    tipo: "gasto",
+    data: new Date().toLocaleString("pt-BR")
 })
 .then(() => {
-    alert("Backup atualizado")
+    alert("Salvou no Firebase")
 })
 .catch((erro) => {
     alert("Erro Firebase: " + erro.message)

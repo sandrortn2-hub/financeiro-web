@@ -341,9 +341,9 @@ carregarFirebase()
 
 console.log("Firebase conectado")
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <body>  
 
@@ -1203,28 +1203,26 @@ function historicoFaturas(){
     alert(texto)
 }
 
-function exportarPDF(){
-
-    window.print()
-}
-
 window.exportarExcel = function(){
 
-    let planilha = XLSX.utils.json_to_sheet(gastos)
+    if(typeof XLSX === "undefined"){
+        alert("Erro: biblioteca Excel não carregou")
+        return
+    }
 
+    if(!gastos || gastos.length === 0){
+        alert("Não tem gastos para exportar")
+        return
+    }
+
+    let planilha = XLSX.utils.json_to_sheet(gastos)
     let livro = XLSX.utils.book_new()
 
-    XLSX.utils.book_append_sheet(
-        livro,
-        planilha,
-        "Gastos"
-    )
+    XLSX.utils.book_append_sheet(livro, planilha, "Gastos")
 
-    XLSX.writeFile(
-        livro,
-        "relatorio_financeiro.xlsx"
-    )
+    XLSX.writeFile(livro, "relatorio_financeiro.xlsx")
 
+    alert("Excel gerado com sucesso")
 }
 
 atualizarTela()

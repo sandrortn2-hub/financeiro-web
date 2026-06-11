@@ -289,9 +289,11 @@ import {
  addDoc,
  getDocs,
  doc,
- setDoc
+ setDoc,
+ getDoc
 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+
 
 const firebaseConfig = {
 
@@ -318,6 +320,7 @@ window.addDoc = addDoc
 window.collection = collection
 window.doc = doc
 window.setDoc = setDoc
+window.getDoc = getDoc
 
 async function carregarFirebase() {
 
@@ -613,21 +616,40 @@ let codigosValidos = ["FIN-1234", "FIN-5678", "FIN-9999"]
 
 
 
-function ativarLicenca(){
+window.ativarLicenca = async function(){
 
     let codigo = prompt("Digite seu código de ativação:")
 
-    if(codigosValidos.includes(codigo)){
+    let referencia = window.doc(
+        window.db,
+        "licencas",
+        codigo
+    )
 
-        localStorage.setItem("licencaAtiva", "sim")
-        localStorage.setItem("codigoUsado", codigo)
+    let consulta = await window.getDoc(referencia)
 
-        alert("Aplicativo ativado com sucesso!")
+    if(consulta.exists()){
+
+        let dados = consulta.data()
+
+        if(dados.ativa === true){
+
+            localStorage.setItem("licencaAtiva", "sim")
+
+            alert("Licença ativada com sucesso 👊🔥")
+
+        }else{
+
+            alert("Licença desativada")
+
+        }
 
     }else{
 
         alert("Código inválido")
+
     }
+
 }
 
 

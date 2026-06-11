@@ -1159,10 +1159,15 @@ async function fazerLogin(){
 
     let dadosLicenca = consulta.data()
 
-    if(dadosLicenca.ativa !== true){
-        alert("Sua licença foi desativada!")
-        return
-    }
+    if(dadosLicenca.ativa !== true && dadosLicenca.ativa !== "true"){
+    alert("Sua licença foi desativada!")
+    return
+}
+
+    if(!dadosLicenca.usuario){
+    alert("Usuário da licença não encontrado!")
+    return
+}
 
     if(dadosLicenca.usuario.toLowerCase() !== usuario.toLowerCase()){
         alert("Essa licença não pertence a este usuário!")

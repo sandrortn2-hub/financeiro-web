@@ -605,7 +605,7 @@ atualizarTela()
 alert("Chegou no backup")
 
 window.setDoc(window.doc(window.db, "backups", "Sandro"), {
-    gastos: gastos,
+    teste: "funcionou",
     atualizadoEm: new Date().toLocaleString("pt-BR")
 })
 .then(() => {

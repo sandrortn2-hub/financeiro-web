@@ -635,6 +635,7 @@ window.ativarLicenca = async function(){
         if(dados.ativa === true){
 
             localStorage.setItem("licencaAtiva", "sim")
+            localStorage.setItem("codigoLicenca", codigo)
 
             alert("Licença ativada com sucesso 👊🔥")
 
@@ -1128,7 +1129,7 @@ function cadastrar(){
     alert("Cadastro realizado com sucesso!")
 }
 
-function fazerLogin(){
+async function fazerLogin(){
 
     let usuario = document.getElementById("usuario").value
     let senha = document.getElementById("senha").value
@@ -1137,11 +1138,37 @@ function fazerLogin(){
     let senhaSalva = localStorage.getItem("senha")
 
     let licencaAtiva = localStorage.getItem("licencaAtiva")
+    let codigoLicenca = localStorage.getItem("codigoLicenca")
 
-if(licencaAtiva !== "sim"){
-    alert("Ative seu código primeiro!")
-    return
-}
+    if(licencaAtiva !== "sim" || !codigoLicenca){
+        alert("Ative seu código primeiro!")
+        return
+    }
+
+    let referencia = window.doc(
+        window.db,
+        "licencas",
+        codigoLicenca
+    )
+
+    let consulta = await window.getDoc(referencia)
+
+    if(!consulta.exists()){
+        alert("Licença não encontrada!")
+        return
+    }
+
+    let dadosLicenca = consulta.data()
+
+    if(dadosLicenca.ativa !== true){
+        alert("Sua licença foi desativada!")
+        return
+    }
+
+    if(dadosLicenca.usuario.toLowerCase() !== usuario.toLowerCase()){
+        alert("Essa licença não pertence a este usuário!")
+        return
+    }
 
     if(usuarioSalvo === null || senhaSalva === null){
 

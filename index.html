@@ -591,24 +591,20 @@ function adicionarGasto(){
         return
     }
 
-   gastos.push({
+  gastos.push({
     categoria: categoria,
     valor: valor,
     tipo: "gasto",
-   data: new Date().toLocaleString("pt-BR")
+    data: new Date().toLocaleString("pt-BR")
 })
 
-    localStorage.setItem(
-        "gastos",
-        JSON.stringify(gastos)
-    )
+localStorage.setItem("gastos", JSON.stringify(gastos))
 
- window.setDoc(window.doc(window.db, "backups", "Sandro"), {
+atualizarTela()
 
+window.setDoc(window.doc(window.db, "backups", "Sandro"), {
     gastos: gastos,
-
     atualizadoEm: new Date().toLocaleString("pt-BR")
-
 })
 .then(() => {
     alert("Backup atualizado")

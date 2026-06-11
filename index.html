@@ -618,37 +618,50 @@ let codigosValidos = ["FIN-1234", "FIN-5678", "FIN-9999"]
 
 window.ativarLicenca = async function(){
 
-    let codigo = prompt("Digite seu código de ativação:")
+    try{
 
-    if(!codigo){
-        alert("Código vazio")
-        return
-    }
+        alert("Iniciando ativação")
 
-    codigo = codigo.trim().toUpperCase()
+        let codigo = prompt("Digite seu código de ativação:")
 
-    let referencia = window.doc(window.db, "licencas", codigo)
+        if(!codigo){
+            alert("Código vazio")
+            return
+        }
 
-    let consulta = await window.getDoc(referencia)
+        codigo = codigo.trim().toUpperCase()
 
-    if(!consulta.exists()){
-        alert("Código inválido")
-        return
-    }
+        alert("Código digitado: " + codigo)
 
-    let dados = consulta.data()
+        let referencia = window.doc(window.db, "licencas", codigo)
 
-    console.log("DADOS LICENÇA:", dados)
+        let consulta = await window.getDoc(referencia)
 
-    if(dados.ativa === true || dados.ativa === "true"){
+        if(!consulta.exists()){
+            alert("Código não encontrado no Firebase")
+            return
+        }
 
-        localStorage.setItem("licencaAtiva", "sim")
-        localStorage.setItem("codigoLicenca", codigo)
+        let dados = consulta.data()
 
-        alert("Licença ativada com sucesso")
+        alert("Licença encontrada. Ativa: " + dados.ativa)
 
-    }else{
-        alert("Licença desativada")
+        if(dados.ativa === true || dados.ativa === "true"){
+
+            localStorage.setItem("licencaAtiva", "sim")
+            localStorage.setItem("codigoLicenca", codigo)
+
+            alert("Licença ativada com sucesso")
+
+        }else{
+
+            alert("Licença desativada")
+        }
+
+    }catch(erro){
+
+        alert("Erro técnico: " + erro.message)
+
     }
 }
 

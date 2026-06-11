@@ -616,45 +616,39 @@ let codigosValidos = ["FIN-1234", "FIN-5678", "FIN-9999"]
 
 
 
-async function ativarLicenca(){
+window.ativarLicenca = async function(){
 
-    let codigo = prompt(
-        "Digite seu código de ativação:"
-    ).trim().toUpperCase()
+    let codigo = prompt("Digite seu código de ativação:")
 
-    let referencia = window.doc(
-        window.db,
-        "licencas",
-        codigo
-    )
+    if(!codigo){
+        alert("Código vazio")
+        return
+    }
+
+    codigo = codigo.trim().toUpperCase()
+
+    let referencia = window.doc(window.db, "licencas", codigo)
 
     let consulta = await window.getDoc(referencia)
 
     if(!consulta.exists()){
-
-        alert("Código inválido!")
+        alert("Código inválido")
         return
     }
 
     let dados = consulta.data()
 
+    console.log("DADOS LICENÇA:", dados)
+
     if(dados.ativa === true || dados.ativa === "true"){
 
-        localStorage.setItem(
-            "licencaAtiva",
-            "sim"
-        )
+        localStorage.setItem("licencaAtiva", "sim")
+        localStorage.setItem("codigoLicenca", codigo)
 
-        localStorage.setItem(
-            "codigoLicenca",
-            codigo
-        )
-
-        alert("Licença ativada 👊🔥")
+        alert("Licença ativada com sucesso")
 
     }else{
-
-        alert("Licença desativada!")
+        alert("Licença desativada")
     }
 }
 

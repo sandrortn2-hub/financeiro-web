@@ -618,7 +618,7 @@ let codigosValidos = ["FIN-1234", "FIN-5678", "FIN-9999"]
 
 window.ativarLicenca = async function(){
 
-    let codigo = prompt("Digite seu código de ativação:")
+    let codigo = prompt("Digite seu código de ativação:").trim().toUpperCase()
 
     let referencia = window.doc(
         window.db,
@@ -632,7 +632,7 @@ window.ativarLicenca = async function(){
 
         let dados = consulta.data()
 
-        if(dados.ativa === true){
+        if(dados.ativa === true || dados.ativa === "true"){
 
             localStorage.setItem("licencaAtiva", "sim")
             localStorage.setItem("codigoLicenca", codigo)

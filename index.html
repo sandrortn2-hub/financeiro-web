@@ -646,7 +646,9 @@ window.ativarLicenca = async function(){
 
         alert("Licença encontrada. Ativa: " + dados.ativa)
 
-        if(dados.ativa === true || dados.ativa === "true"){
+        let statusLicenca = dados.ativa || dados.Ativa || dados.ativo || dados.status
+
+if(statusLicenca === true || statusLicenca === "true"){
 
             localStorage.setItem("licencaAtiva", "sim")
             localStorage.setItem("codigoLicenca", codigo)
@@ -655,7 +657,10 @@ window.ativarLicenca = async function(){
 
         }else{
 
-            alert("Licença desativada")
+           alert(
+    "Licença desativada: " +
+    JSON.stringify(dados)
+) 
         }
 
     }catch(erro){
@@ -1135,6 +1140,9 @@ function cadastrar(){
         return
     }
 
+    novoUsuario = novoUsuario.trim().toLowerCase()
+    novaSenha = novaSenha.trim()
+
     localStorage.setItem("usuario", novoUsuario)
     localStorage.setItem("senha", novaSenha)
 
@@ -1143,8 +1151,8 @@ function cadastrar(){
 
 async function fazerLogin(){
 
-    let usuario = document.getElementById("usuario").value
-    let senha = document.getElementById("senha").value
+    let usuario = document.getElementById("usuario").value.trim().toLowerCase()
+    let senha = document.getElementById("senha").value.trim()
 
     let usuarioSalvo = localStorage.getItem("usuario")
     let senhaSalva = localStorage.getItem("senha")
